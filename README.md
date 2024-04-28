@@ -45,3 +45,5 @@ For a simple example, you could use [sirv-cli](https://www.npmjs.com/package/sir
 ```shellscript
 npx sirv-cli build/client/ --single
 ```
+
+Deploying on Github pages by following [this YouTube video](https://www.youtube.com/watch?v=EO_-KwSslWQ).
