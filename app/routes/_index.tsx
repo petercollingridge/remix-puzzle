@@ -17,6 +17,9 @@ export default function Index() {
           <Link to="test">Test</Link>
         </li>
         <li>
+          <Link to="arrange-circles">Arrange circles</Link>
+        </li>
+        <li>
           <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
             Remix Docs
           </a>
