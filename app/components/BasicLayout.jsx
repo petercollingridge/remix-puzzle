@@ -1,6 +1,6 @@
 import './basic_layout.css';
 
-export default function BasicLayout() {
+export default function BasicLayout({ children }) {
   return (
     <main>
       <svg id="puzzle-chamber" viewBox="-128 -128 256 256" preserveAspectRatio="xMidYMid meet">
@@ -22,7 +22,7 @@ export default function BasicLayout() {
 
         <rect className="background" x="-200" y="-200" width="400" height="400" />
 
-        <p>Puzzle</p>
+        {children}
 
         <circle id="chamber-window" r="225" />
       </svg>

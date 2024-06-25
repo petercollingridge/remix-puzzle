@@ -1,0 +1,14 @@
+.draggable-shape {
+  fill-opacity: 0;
+  stroke: #aaa;
+  stroke-width: 2;
+}
+
+.draggable-shape:hover {
+  fill-opacity: 0.5;
+  fill: blue;
+  stroke: blue;
+  transition: stroke 250ms;
+  transition: fill-opacity 250ms;
+  cursor: move;
+}
