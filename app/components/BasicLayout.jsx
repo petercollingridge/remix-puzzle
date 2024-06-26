@@ -1,9 +1,12 @@
+import { useRef } from 'react';
 import './basic_layout.css';
 
-export default function BasicLayout({ children }) {
+export default function BasicLayout({ Puzzle }) {
+  const ref = useRef();
+
   return (
     <main>
-      <svg id="puzzle-chamber" viewBox="-128 -128 256 256" preserveAspectRatio="xMidYMid meet">
+      <svg ref={ref} id="puzzle-chamber" viewBox="-128 -128 256 256" preserveAspectRatio="xMidYMid meet">
         <defs>
           <filter id="shadow-filter">
             <feOffset result="offOut" in="SourceAlpha" dx="2" dy="2"/>
@@ -22,7 +25,7 @@ export default function BasicLayout({ children }) {
 
         <rect className="background" x="-200" y="-200" width="400" height="400" />
 
-        {children}
+        <Puzzle svgRef={ref} />
 
         <circle id="chamber-window" r="225" />
       </svg>
