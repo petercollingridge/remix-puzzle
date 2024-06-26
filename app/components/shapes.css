@@ -4,7 +4,8 @@
   stroke-width: 2;
 }
 
-.draggable-shape:hover {
+.draggable-shape:hover,
+.draggable-shape.selected {
   fill-opacity: 0.5;
   fill: blue;
   stroke: blue;

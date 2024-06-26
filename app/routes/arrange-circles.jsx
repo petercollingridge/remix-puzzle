@@ -15,11 +15,10 @@ function DragCircle({ svgRef, x = 0, y = 0, r = 16 }) {
     const CTM = svgRef.current.getScreenCTM();
 
     const handleMouseMove = (event) => {
-      console.log(pos)
-      setPos({
-        x: pos.x - event.movementX / CTM.a,
-        y: pos.y - event.movementY / CTM.d,
-      })
+      setPos((prev) => ({
+        x: prev.x + event.movementX / CTM.a,
+        y: prev.y + event.movementY / CTM.d,
+      }));
     };
 
     const handleMouseUp = (e) => {
@@ -36,9 +35,11 @@ function DragCircle({ svgRef, x = 0, y = 0, r = 16 }) {
     };
   }, [selected]);
 
+  const className = 'draggable-shape' + (selected ? ' selected' : '');
+
   return (
     <circle
-      className="draggable-shape"
+      className={className}
       onMouseDown={() => setSelected(true)}
       cx={pos.x}
       cy={pos.y}
