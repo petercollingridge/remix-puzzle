@@ -6,7 +6,7 @@
 
 .puzzle.hover .draggable-shape:hover,
 .puzzle.dragging .draggable-shape.selected {
-  fill-opacity: 0.5;
+  fill-opacity: 0.85;
   fill: blue;
   stroke: blue;
   transition: stroke 250ms;
