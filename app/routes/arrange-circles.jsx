@@ -3,11 +3,19 @@ import BasicLayout from '../components/BasicLayout';
 
 import '../components/shapes.css';
 
-function DragCircle({ svgRef, x = 0, y = 0, r = 24 }) {
+function DragCircle({ svgRef, setParentClass, x = 0, y = 0, r = 24 }) {
   const [pos, setPos] = useState({ x, y });
   const [selected, setSelected] = useState(false);
 
+  const select = () => {
+    setSelected(true);
+    setParentClass('dragging');
+  };
 
+  const deselect = () => {
+    setSelected(false);
+    setParentClass('hover');
+  };
 
   useEffect(() => {
     if (!selected) {
@@ -23,17 +31,13 @@ function DragCircle({ svgRef, x = 0, y = 0, r = 24 }) {
       }));
     };
 
-    const handleMouseUp = (e) => {
-      setSelected(false);
-    };
-
     document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mouseup", deselect);
 
     return () => {
       // handleMouseMove.cancel();
       document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mouseup", deselect);
     };
   }, [selected]);
 
@@ -42,7 +46,7 @@ function DragCircle({ svgRef, x = 0, y = 0, r = 24 }) {
   return (
     <circle
       className={className}
-      onMouseDown={() => setSelected(true)}
+      onMouseDown={select}
       cx={pos.x}
       cy={pos.y}
       r={r}
@@ -51,11 +55,19 @@ function DragCircle({ svgRef, x = 0, y = 0, r = 24 }) {
 }
 
 function Puzzle({ svgRef }) {
+  const [className, setClassName] = useState('hover');
+
+  const circles = [
+    { x: -36, y: 0, r: 24 },
+    { x:  36, y: 0, r: 24 },
+  ];
+
   return (
-    <>
-      <DragCircle x={-36} y={0} svgRef={svgRef} />
-      <DragCircle x={36} y={0} svgRef={svgRef} />
-    </>
+    <g className={`puzzle ${className}`}>
+      {circles.map((circle, index) => (
+        <DragCircle key={index} svgRef={svgRef} setParentClass={setClassName} {...circle} />
+      ))}
+    </g>
   )
 }
 
