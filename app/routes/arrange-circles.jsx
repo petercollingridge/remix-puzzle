@@ -50,12 +50,9 @@ function Puzzle({ svgRef }) {
     const n = items.length - 1;
 
     const handleMouseMove = (event) => {
-      setItems((oldItems) => {
-        // Not sure why we have to divide by 2
-        oldItems[n].x += event.movementX / CTM.a / 2;
-        oldItems[n].y += event.movementY / CTM.d / 2;
-        return [...oldItems];
-      });
+      items[n].x += event.movementX / CTM.a;
+      items[n].y += event.movementY / CTM.d;
+      setItems([...items]);
     };
 
     document.addEventListener("mousemove", handleMouseMove);
