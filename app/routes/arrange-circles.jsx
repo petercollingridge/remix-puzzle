@@ -3,9 +3,11 @@ import BasicLayout from '../components/BasicLayout';
 
 import '../components/shapes.css';
 
-function DragCircle({ svgRef, x = 0, y = 0, r = 16 }) {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+function DragCircle({ svgRef, x = 0, y = 0, r = 24 }) {
+  const [pos, setPos] = useState({ x, y });
   const [selected, setSelected] = useState(false);
+
+
 
   useEffect(() => {
     if (!selected) {
@@ -48,6 +50,15 @@ function DragCircle({ svgRef, x = 0, y = 0, r = 16 }) {
   );
 }
 
+function Puzzle({ svgRef }) {
+  return (
+    <>
+      <DragCircle x={-36} y={0} svgRef={svgRef} />
+      <DragCircle x={36} y={0} svgRef={svgRef} />
+    </>
+  )
+}
+
 export default function Circles() {
-  return <BasicLayout Puzzle={DragCircle} />;
+  return <BasicLayout Puzzle={Puzzle} />;
 }
