@@ -3,8 +3,10 @@ import BasicLayout from '../components/BasicLayout';
 
 import '../components/shapes.css';
 
-function Circle({ id, selected, select, x = 0, y = 0, r = 24 }) {
-  const className = 'draggable-shape' + (selected ? ' selected' : '');
+function Circle({ id, selected, collide, select, x = 0, y = 0, r = 24 }) {
+  let className = 'draggable-shape';
+  if (selected) className += ' selected';
+  else if (collide) className += ' collision';
 
   return (
     <circle
@@ -15,6 +17,26 @@ function Circle({ id, selected, select, x = 0, y = 0, r = 24 }) {
       r={r}
     />
   );
+}
+
+// Given an array of circle of length n,
+// test whether circles 1 to n-1 intersect with circle n
+// return an array of the ids of those that do intersect
+function testForCircleCollisions(circles) {
+  const n = circles.length - 1;
+  const target = circles[n];
+  const hits = [];
+  for (let i =  0; i < n; i++) {
+    const circle = circles[i];
+    // Square of sum of radii, plus 2 for the stroke width
+    const r2 = (target.r + circle.r + 2) * (target.r + circle.r + 2);
+    const dx = target.x - circle.x;
+    const dy = target.y - circle.y;
+    if (dx * dx + dy * dy <= r2) {
+      hits.push(circle.id);
+    }
+  }
+  return hits;
 }
 
 function Puzzle({ svgRef }) {
@@ -52,6 +74,10 @@ function Puzzle({ svgRef }) {
     const handleMouseMove = (event) => {
       items[n].x += event.movementX / CTM.a;
       items[n].y += event.movementY / CTM.d;
+      const hits = testForCircleCollisions(items);
+      items.forEach((item) => {
+        item.collide = hits.includes(item.id);
+      });
       setItems([...items]);
     };
 

@@ -4,6 +4,10 @@
   stroke-width: 2;
 }
 
+.draggable-shape.collision {
+  stroke: red;
+}
+
 .puzzle.hover .draggable-shape:hover,
 .puzzle.dragging .draggable-shape.selected {
   fill-opacity: 0.85;
