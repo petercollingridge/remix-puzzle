@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import BasicLayout from '../components/BasicLayout';
+import { testForCircleCollisions } from '../utils/collisions';
 
 import '../components/shapes.css';
+
+const setup = [
+  { id: 0, x: -64, y:   0, r: 32 },
+  { id: 1, x:  64, y:   0, r: 32 },
+  { id: 2, x:   0, y: -64, r: 32 },
+];
 
 function Circle({ id, selected, collide, select, x = 0, y = 0, r = 24 }) {
   let className = 'draggable-shape';
@@ -19,34 +26,10 @@ function Circle({ id, selected, collide, select, x = 0, y = 0, r = 24 }) {
   );
 }
 
-// Given an array of circle of length n,
-// test whether circles 1 to n-1 intersect with circle n
-// return an array of the ids of those that do intersect
-function testForCircleCollisions(circles) {
-  const n = circles.length - 1;
-  const target = circles[n];
-  const hits = [];
-  for (let i =  0; i < n; i++) {
-    const circle = circles[i];
-    // Square of sum of radii, plus 2 for the stroke width
-    const r2 = (target.r + circle.r + 2) * (target.r + circle.r + 2);
-    const dx = target.x - circle.x;
-    const dy = target.y - circle.y;
-    if (dx * dx + dy * dy <= r2) {
-      hits.push(circle.id);
-    }
-  }
-  return hits;
-}
-
 function Puzzle({ svgRef }) {
   const [className, setClassName] = useState('hover');
   const [selectedItem, setSelectedItem] = useState(-1);
-
-  const [items, setItems] = useState([
-    { id: 0, x: -36, y: 0, r: 24 },
-    { id: 1, x:  36, y: 0, r: 24 },
-  ]);
+  const [items, setItems] = useState(setup);
 
   const select = (id) => {
     setSelectedItem(id);
@@ -74,10 +57,24 @@ function Puzzle({ svgRef }) {
     const handleMouseMove = (event) => {
       items[n].x += event.movementX / CTM.a;
       items[n].y += event.movementY / CTM.d;
-      const hits = testForCircleCollisions(items);
+      const [hits, inside] = testForCircleCollisions(items[n], items.slice(0, -1));
+
       items.forEach((item) => {
         item.collide = hits.includes(item.id);
+        item.child = inside.includes(item.id);
+        if (item.collide || item.child) {
+          item.r = 32 * 1.8;
+        } else {
+          item.r = 32;
+        }
       });
+
+      if (hits.length + inside.length > 0) {
+        items[n].r = 32 * 0.7;
+      } else {
+        items[n].r = 32;
+      }
+
       setItems([...items]);
     };
 
